@@ -1,3 +1,4 @@
-import serverInit from "./server/serverInit";
+import serverInit from './server/serverInit';
 
-serverInit().then(() => console.log("Server iniciou"));
+
+serverInit().then(() => console.log('Server iniciou'));
