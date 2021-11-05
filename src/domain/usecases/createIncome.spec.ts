@@ -17,12 +17,10 @@ describe('create income use case tests', () => {
         const { sut, okIncome } = makeSut();
         expect.assertions(1);
 
-        try {
-            let income = { ...okIncome, value: 0 };
-            await sut.execute(income.value, income.description, income.date, income.paid);
-        } catch (err) {
+        let income = { ...okIncome, value: 0 };
+        sut.execute(income.value, income.description, income.date, income.paid).catch((err) => {
             expect(err).toBeInstanceOf(Error);
-        }
+        });
 
     });
 });
