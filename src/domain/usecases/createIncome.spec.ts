@@ -1,5 +1,6 @@
 import { CreateIncomeUseCase } from './createIncome';
 import { InvalidValueError, InvalidDescriptionError, InvalidDateError } from '../errors';
+import { Income } from '../entities';
 
 const makeSut = () => {
     const sut = new CreateIncomeUseCase();
@@ -60,5 +61,15 @@ describe('create income use case tests', () => {
         } catch (err) {
             expect(err).toBeInstanceOf(InvalidDateError);
         }
+    });
+
+    test('should return created income object operation was ok', async () => {
+        const { sut, okIncome } = makeSut();
+
+        let income = { ...okIncome };
+        let createdIncome: Income = await sut.execute(income.value, income.description, income.date, income.paid);
+        expect(createdIncome).not.toBeNull();
+        expect(createdIncome).toBeInstanceOf(Income);
+        expect(createdIncome.description).toEqual(income.description);
     });
 });

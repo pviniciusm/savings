@@ -21,7 +21,7 @@ class CreateIncomeUseCase {
             throw new InvalidDateError();
         }
 
-        throw Error('Not implemented yet');
+        return new Income(value, description, date, paid);
     }
 }
 
