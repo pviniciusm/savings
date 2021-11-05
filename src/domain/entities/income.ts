@@ -6,6 +6,7 @@ class Income extends Account {
         value: number,
         description: string,
         public date: Date,
+        public createdAt: Date,
         public paid?: boolean
     ) {
         super(createUniqueId(), value, description);
