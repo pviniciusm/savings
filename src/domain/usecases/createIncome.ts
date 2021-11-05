@@ -1,14 +1,17 @@
 import { Income } from '../entities';
 
 class CreateIncomeUseCase {
-    execute(
+    async execute(
         value: number,
         description: string,
         date: Date,
         paid?: boolean
     ) {
-        const newIncome = new Income(value, description, date, new Date(), paid);
-        return newIncome;
+        if (value <= 0) {
+            throw new Error('Value must be bigger than zero');
+        }
+
+        throw Error('Not implemented yet');
     }
 }
 
