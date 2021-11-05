@@ -7,6 +7,6 @@ const serverInit = () => {
         app.listen(8081);
         resolve(true);
     });
-}
+};
 
 export default serverInit;
