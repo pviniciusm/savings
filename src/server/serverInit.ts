@@ -7,8 +7,9 @@ const serverInit = () => {
 
     app.use('/income', incomeRoutes);
 
+    let port: number | string = process.env.PORT || 8081;
     return new Promise<any>((resolve, reject) => {
-        app.listen(8081);
+        app.listen(port);
         resolve(true);
     });
 };

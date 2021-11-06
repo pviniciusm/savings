@@ -4,8 +4,10 @@
   "description": "Savings control app",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "ts-node-dev --respawn --transpile-only ./src/main.ts"
+    "test": "npx jest",
+    "dev": "ts-node-dev --respawn --transpile-only ./src/main.ts",
+    "postinstall": "npx tsc",
+    "start": "node ./dist/main.js"
   },
   "repository": {
     "type": "git",
