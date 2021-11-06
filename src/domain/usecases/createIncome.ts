@@ -1,7 +1,16 @@
+import { InMemoryIncomeRepository } from '../data/in-memory-income-repository';
 import { Income } from '../entities';
 import { InvalidValueError, InvalidDescriptionError, InvalidDateError } from '../errors';
+import { IIncomeRepository } from '../repositories/income-repository';
+
 
 class CreateIncomeUseCase {
+    private repository: IIncomeRepository;
+
+    constructor(repository?: IIncomeRepository) {
+        this.repository = repository ?? new InMemoryIncomeRepository();
+    }
+
     async execute(
         value: number,
         description: string,
@@ -21,7 +30,10 @@ class CreateIncomeUseCase {
             throw new InvalidDateError();
         }
 
-        return new Income(value, description, date, paid);
+        let newIncome = new Income(value, description, date, paid);
+        this.repository.create(newIncome);
+
+        return newIncome;
     }
 }
 
