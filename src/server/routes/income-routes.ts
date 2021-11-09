@@ -2,9 +2,15 @@ import { Request, Response, Router } from 'express';
 import { exception } from '../../controller/errors/exception';
 import { RequiredFieldError } from '../../controller/errors/required-field-error';
 import { IncomeController } from '../../controller/income';
+import { InMemoryIncomeRepository } from '../../domain/data/in-memory-income-repository';
+import { CreateIncomeUseCase } from '../../domain/usecases/create-income/create-income';
 
 const routes = Router();
-const controller = new IncomeController();
+
+// Classes initialization
+const inMemoryIncomeRepository = new InMemoryIncomeRepository();
+const createIncomeUseCase = new CreateIncomeUseCase(inMemoryIncomeRepository);
+const controller = new IncomeController(createIncomeUseCase);
 
 routes.get('/', async (req: Request, res: Response) => {
     try {
@@ -18,10 +24,7 @@ routes.get('/', async (req: Request, res: Response) => {
 
 routes.post('/', async (req: Request, res: Response) => {
     try {
-        const { value, description, date, paid } = req.body;
-        const ret = await controller.create(value, description, date, paid);
-
-        return res.status(201).send(ret);
+        return await controller.create(req, res);
     } catch (err) {
         if (err instanceof RequiredFieldError) {
             return res.status(400).send(exception(err));
