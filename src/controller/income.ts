@@ -1,22 +1,13 @@
 import { Request, Response } from 'express';
 import { Income } from '../domain/entities';
 import { CreateIncomeUseCase } from '../domain/usecases/create-income/create-income';
-import { ListIncomeUseCase } from '../domain/usecases/listIncome';
+import { ListIncomeUseCase } from '../domain/usecases/list-income/list-income';
 import { RequiredFieldError } from './errors/required-field-error';
-
-interface IResponse<T> {
-    message: string,
-    ok: boolean,
-    data?: T,
-    exception?: any
-}
-
-interface ICreateIncomeResponse extends IResponse<Income> { }
-interface IListIncomeResponse extends IResponse<Array<Income>> { }
 
 export class IncomeController {
     constructor(
-        private readonly createIncomeUseCase: CreateIncomeUseCase
+        private readonly createIncomeUseCase: CreateIncomeUseCase,
+        private readonly listIncomeUseCase: ListIncomeUseCase
     ) {}
 
     async create(request: Request, response: Response): Promise<Response> {
@@ -52,14 +43,15 @@ export class IncomeController {
         });
     }
 
-    async list(id?: string): Promise<IListIncomeResponse> {
-        let listedIncomes = await new ListIncomeUseCase()
-            .execute(id);
+    async list(request: Request, response: Response): Promise<Response> {
+        const id = request.query.id ? request.query.id as string : undefined;
 
-        return {
+        let listedIncomes = await this.listIncomeUseCase.execute({ id });
+
+        return response.status(200).send({
             message: 'ok',
             ok: true,
             data: listedIncomes
-        };
+        });
     }
 }
