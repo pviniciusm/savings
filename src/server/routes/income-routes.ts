@@ -2,21 +2,23 @@ import { Request, Response, Router } from 'express';
 import { exception } from '../../controller/errors/exception';
 import { RequiredFieldError } from '../../controller/errors/required-field-error';
 import { IncomeController } from '../../controller/income';
-import { InMemoryIncomeRepository } from '../../domain/data/in-memory-income-repository';
 import { CreateIncomeUseCase } from '../../domain/usecases/create-income/create-income';
+import { ListIncomeUseCase } from '../../domain/usecases/list-income/list-income';
+import { getRepository } from '../configuration/income-repository';
 
 const routes = Router();
 
-// Classes initialization
-const inMemoryIncomeRepository = new InMemoryIncomeRepository();
-const createIncomeUseCase = new CreateIncomeUseCase(inMemoryIncomeRepository);
-const controller = new IncomeController(createIncomeUseCase);
+// Repository initialization
+const repository = getRepository();
+
+const controller = new IncomeController(
+    new CreateIncomeUseCase(repository),
+    new ListIncomeUseCase(repository)
+);
 
 routes.get('/', async (req: Request, res: Response) => {
     try {
-        let id = req.query.id ? req.query.id as string : undefined;
-        const ret = await controller.list(id);
-        return res.status(200).send(ret);
+        return await controller.list(req, res);
     } catch (err) {
         return res.status(500).send(exception(err));
     }
