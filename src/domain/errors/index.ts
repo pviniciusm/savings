@@ -1,6 +1,6 @@
 class InvalidValueError extends Error {
-    constructor() {
-        super('Value must be a number and bigger than zero');
+    constructor(value?: string) {
+        super(`${value ?? 'Value'} must be a number and bigger than zero`);
     }
 }
 
