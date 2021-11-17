@@ -1,5 +1,6 @@
 import { Outcome } from '../domain/entities';
 import { IOutcomeRepository } from '../domain/repositories/outcome-repository';
+import { IListOutcomeDTO } from '../domain/usecases/list-outcome/list-outcome-dto';
 
 export class InMemoryOutcomeRepository implements IOutcomeRepository {
     public outcomeList: Array<Outcome>;
@@ -21,7 +22,12 @@ export class InMemoryOutcomeRepository implements IOutcomeRepository {
         this.outcomeList.push(outcome);
     }
 
-    async list(id?: string): Promise<Array<Outcome>> {
-        return id ? this.outcomeList.filter(outcome => outcome.getId() == id) : [...this.outcomeList];
+    async list(filter: IListOutcomeDTO): Promise<Array<Outcome>> {
+        return this.outcomeList
+            .filter(outcome => filter.id ? outcome.getId() === filter.id : true)
+            .filter(outcome => filter.month && filter.year 
+                    ? outcome.date.getMonth() + 1 === filter.month && outcome.date.getFullYear() === filter.year
+                    : true
+            );
     }
 }
