@@ -1,5 +1,5 @@
-import { Outcome } from '../entities';
-import { IOutcomeRepository } from '../repositories/outcome-repository';
+import { Outcome } from '../domain/entities';
+import { IOutcomeRepository } from '../domain/repositories/outcome-repository';
 
 export class InMemoryOutcomeRepository implements IOutcomeRepository {
     public outcomeList: Array<Outcome>;

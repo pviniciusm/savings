@@ -1,5 +1,5 @@
-import { Income } from '../entities';
-import { IIncomeRepository } from '../repositories/income-repository';
+import { Income } from '../domain/entities';
+import { IIncomeRepository } from '../domain/repositories/income-repository';
 
 export class InMemoryIncomeRepository implements IIncomeRepository {
     public incomeList: Array<Income>;

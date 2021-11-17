@@ -1,7 +1,7 @@
 import { Outcome } from '../../entities/outcome';
 import { InvalidDescriptionError, InvalidValueError } from '../../errors';
 import {ICreateOutcomeDTO} from './create-outcome-dto';
-import {InMemoryOutcomeRepository} from '../../data/in-memory-outcome-repository';
+import {InMemoryOutcomeRepository} from '../../../data/in-memory-outcome-repository';
 import { addDaysToDate } from '../../infra/add-days-to-date';
 
 class CreateOutcomeUseCase {

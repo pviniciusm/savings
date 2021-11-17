@@ -1,9 +1,7 @@
-import { InMemoryIncomeRepository } from '../../data/in-memory-income-repository';
 import { Income } from '../../entities';
 import { InvalidValueError, InvalidDescriptionError, InvalidDateError } from '../../errors';
 import { IIncomeRepository } from '../../repositories/income-repository';
 import { ICreateIncomeDTO } from './create-income-dto';
-
 
 class CreateIncomeUseCase {
 

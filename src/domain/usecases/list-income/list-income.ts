@@ -1,4 +1,3 @@
-import { InMemoryIncomeRepository } from '../../data/in-memory-income-repository';
 import { Income } from '../../entities';
 import { IIncomeRepository } from '../../repositories/income-repository';
 import { IListIncomeDTO } from './list-income-dto';

@@ -2,7 +2,7 @@ import { ListIncomeUseCase } from './list-income';
 import { IListIncomeDTO } from './list-income-dto';
 
 import { InvalidValueError, InvalidDescriptionError, InvalidDateError } from '../../errors';
-import { InMemoryIncomeRepository } from '../../data/in-memory-income-repository';
+import { InMemoryIncomeRepository } from '../../../data/in-memory-income-repository';
 import { Income } from '../../entities';
 import { IIncomeRepository } from '../../repositories/income-repository';
 

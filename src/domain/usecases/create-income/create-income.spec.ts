@@ -3,7 +3,7 @@ import { InvalidValueError, InvalidDescriptionError, InvalidDateError } from '..
 import { addDaysToDate } from '../../infra/add-days-to-date';
 import { Income } from '../../entities';
 import { ICreateIncomeDTO } from './create-income-dto';
-import { InMemoryIncomeRepository } from '../../data/in-memory-income-repository';
+import { InMemoryIncomeRepository } from '../../../data/in-memory-income-repository';
 
 const makeSut = () => {
     const sut = new CreateIncomeUseCase(new InMemoryIncomeRepository());
