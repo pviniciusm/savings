@@ -1,7 +1,8 @@
 import { Outcome } from '../../entities/outcome';
-import { InvalidValueError } from '../../errors';
+import { InvalidDescriptionError, InvalidValueError } from '../../errors';
 import {ICreateOutcomeDTO} from './create-outcome-dto';
 import {InMemoryOutcomeRepository} from '../../data/in-memory-outcome-repository';
+import { addDaysToDate } from '../../infra/add-days-to-date';
 
 class CreateOutcomeUseCase {
     constructor(private readonly repository: InMemoryOutcomeRepository) {}
@@ -11,7 +12,14 @@ class CreateOutcomeUseCase {
             throw new InvalidValueError();
         }
 
-        throw new Error();
+        if (outcome.description.length <= 0 || outcome.description.length > 50) {
+            throw new InvalidDescriptionError();
+        }
+
+        let newOutcome = new Outcome(outcome.value, outcome.description, outcome.date, outcome.paid);
+        this.repository.create(newOutcome);
+
+        return newOutcome;
     }
 }
 
@@ -41,5 +49,35 @@ describe('create outcome use case tests', () => {
         } catch(err) {
             expect(err).toBeInstanceOf(InvalidValueError);
         }
+    });
+
+    test('should return created income object if all provided data is ok', async () => {
+        const { sut, okOutcome } = makeSut();
+
+        let income: ICreateOutcomeDTO = { ...okOutcome };
+        let createdOutcome: Outcome = await sut.execute(income);
+        expect(createdOutcome).not.toBeNull();
+        expect(createdOutcome).toBeInstanceOf(Outcome);
+        expect(createdOutcome.description).toEqual(income.description);
+    });
+
+    test('should return created income object if all provided data is ok and date is today', async () => {
+        const { sut, okOutcome } = makeSut();
+
+        let income: ICreateOutcomeDTO = { ...okOutcome, date: new Date() };
+        let createdOutcome: Outcome = await sut.execute(income);
+        expect(createdOutcome).not.toBeNull();
+        expect(createdOutcome).toBeInstanceOf(Outcome);
+        expect(createdOutcome.description).toEqual(income.description);
+    });
+
+    test('should return created income object if all provided data is ok and date is one year ago', async () => {
+        const { sut, okOutcome } = makeSut();
+
+        let income: ICreateOutcomeDTO = { ...okOutcome, date: addDaysToDate(new Date(), -365) };
+        let createdOutcome: Outcome = await sut.execute(income);
+        expect(createdOutcome).not.toBeNull();
+        expect(createdOutcome).toBeInstanceOf(Outcome);
+        expect(createdOutcome.description).toEqual(income.description);
     });
 });
