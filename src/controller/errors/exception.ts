@@ -1,7 +1,7 @@
-export function exception(err: any): any {
+export const Exception = (err: any): any => {
     return {
         ok: false,
         message: err.toString(),
         exception: true
     };
-}
+};
