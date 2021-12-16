@@ -1,40 +1,8 @@
 import { InMemoryOutcomeRepository } from '../../../data/in-memory-outcome-repository';
 import { Outcome } from '../../entities';
-import { InvalidValueError } from '../../errors';
-import { IOutcomeRepository } from '../../repositories/outcome-repository';
+import { InvalidValueError, RequiredFieldsError } from '../../errors';
 import { IListOutcomeDTO } from './list-outcome-dto';
-
-class RequiredFieldError extends Error {
-    constructor(field: string) {
-        super(`${field} is required`);
-    }
-}
-
-class RequiredFieldsError extends Error {
-    constructor(fields: string) {
-        super(`${fields} are required`);
-    }
-}
-
-class ListOutcomeUseCase {
-    constructor(private repository: IOutcomeRepository) {}
-
-    async execute(outcomeFilter: IListOutcomeDTO): Promise<Array<Outcome>> {
-        if(!outcomeFilter.id && !outcomeFilter.month && !outcomeFilter.year) {
-            throw new RequiredFieldsError('Outcome ID or month/year');
-        }
-
-        if(outcomeFilter.month !== undefined && outcomeFilter.month <= 0) {
-            throw new InvalidValueError('Month');
-        }
-
-        if(outcomeFilter.year !== undefined && outcomeFilter.year <= 0) {
-            throw new InvalidValueError('Year');
-        }
-
-        return this.repository.list(outcomeFilter);
-    }
-}
+import { ListOutcomeUseCase } from './list-outcome';
 
 const makeSut = (repository?: InMemoryOutcomeRepository) => {
     let repo = (repository && repository.outcomeList.length > 0) 
