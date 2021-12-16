@@ -14,6 +14,7 @@ export class InMemoryOutcomeRepository implements IOutcomeRepository {
                 new Outcome(20000, 'Growdev', new Date('2021-11-07'), true),
                 new Outcome(100, 'Freela #1', new Date('2021-11-07'), true),
                 new Outcome(500, 'Pix do cliente', new Date('2021-11-07'), true),
+                new Outcome(500, 'Pix do cliente 1', new Date('2019-11-07'), true),
             ];
         }
     }
@@ -25,8 +26,12 @@ export class InMemoryOutcomeRepository implements IOutcomeRepository {
     async list(filter: IListOutcomeDTO): Promise<Array<Outcome>> {
         return this.outcomeList
             .filter(outcome => filter.id ? outcome.getId() === filter.id : true)
-            .filter(outcome => filter.month && filter.year 
-                    ? outcome.date.getMonth() + 1 === filter.month && outcome.date.getFullYear() === filter.year
+            .filter(outcome => filter.year 
+                    ? outcome.date.getFullYear() === filter.year
+                    : true
+            )
+            .filter(outcome => filter.month 
+                    ? outcome.date.getMonth() + 1 === filter.month
                     : true
             );
     }
